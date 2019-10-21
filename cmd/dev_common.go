@@ -208,7 +208,11 @@ func commonCmd(config *devCommonConfig, mode string) error {
 		}
 		//} Used to close the "if controller does not exist"
 	}
-	controllerMount := destController + ":/appsody/appsody-controller"
+	//HACK
+	destController = "appsody-controller"
+	//controllerMount := destController + ":/appsody/appsody-controller"
+	controllerMount := destController + ":/appsody"
+	//END HACK
 	Debug.log("Adding controller to volume mounts: ", controllerMount)
 	volumeMaps = append(volumeMaps, "-v", controllerMount)
 	if !config.Buildah {
