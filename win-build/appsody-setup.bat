@@ -2,7 +2,10 @@
 @echo off
 
 docker ps >nul 2>nul
-IF %ERRORLEVEL% NEQ 0 ECHO [Warning] Docker not running or not installed 
+IF %ERRORLEVEL% NEQ 0 (
+ ECHO [Warning] Docker not running or not installed 
+ set NoDocker=1
+)
 @echo Adding %~dp0 to your Path environment variable if not already present....
 @echo off
 
@@ -15,7 +18,10 @@ for /F "skip=2 tokens=1,2*" %%N in ('%SystemRoot%\System32\reg.exe query "HKCU\E
 IF DEFINED UserPath goto UserPathRead
 REM If no user path env var is set, we just set it to %APPSODY_PATH%
 setx PATH "%%APPSODY_PATH%%
-
+IF %ERRORLEVEL% NEQ 0 (
+    @ECHO [Error] Could not set the user path environment variable - installation failed.
+    EXIT /B 100
+)
 goto :SkipSetx
 
 :UserPathRead
@@ -28,6 +34,10 @@ if NOT "%UserPathTest%" == "%UserPath%" goto SkipSetx
 set lastUserPathChar=%UserPath:~-1%
 if NOT "%lastUserPathChar%" == ";" set "UserPath=%UserPath%;"
 setx PATH "%UserPath%%%APPSODY_PATH%%
+IF %ERRORLEVEL% NEQ 0 (
+    @ECHO [Error] Could not set the user path environment variable - installation failed.
+    EXIT /B 100
+)
 :SkipSetx
 REM Append the value of %APPSODY_PATH% to the PATH env var, unless it's already there
 CALL SET TestPath=%%PATH:%APPSODY_PATH%=NONE%%
@@ -38,3 +48,5 @@ set PATH=%PATH%%APPSODY_PATH%
 :done
 
 @echo Done - enjoy appsody!
+@echo %NoDocker%
+if %NoDocker% == 1 EXIT /B 10
