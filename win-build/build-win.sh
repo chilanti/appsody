@@ -21,11 +21,11 @@ if [[ "$OSTYPE" == "linux"* ]]; then
 
 # Untar nsis compiler
 
-tar -xvf /tmp/nsis-3.04-src.tar.bz2
+tar -xvf ./nsis-3.04-src.tar.bz2
 # Untar nsis Stubs and Plugins
-tar -xvf /tmp/nsis-3.04.tar
+tar -xvf ./nsis-3.04.tar
 # Untar scons
-tar -xvf /tmp/scons-3.1.1.tar.gz
+tar -xvf ./scons-3.1.1.tar.gz
 # Build scons
 cd scons-3.1.1 && python setup.py install
 cd ..
