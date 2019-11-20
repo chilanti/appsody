@@ -13,7 +13,7 @@ FunctionEnd
 
 # set the name of the installer
 
-Outfile "test_installer.exe"
+Outfile "appsody_installer.exe"
 
 Name "Appsody"
 BrandingText "Appsody Installer"
